@@ -3,7 +3,7 @@ import 'package:horeca_project/presentation/product_screen.dart';
 import '../model/category.dart';
 
 class CategoryScreen extends StatelessWidget {
-  static const routeName = '/category';
+  static const routeName = 'category';
 
   @override
   Widget build(BuildContext context) {
