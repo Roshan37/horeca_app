@@ -3,11 +3,12 @@ import 'package:horeca_project/presentation/product_screen.dart';
 import '../model/category.dart';
 
 class CategoryScreen extends StatelessWidget {
-  static const routeName = 'category';
+  late Category category;
+
+  CategoryScreen({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
-    final Category category = ModalRoute.of(context)?.settings.arguments as Category;
 
     return Scaffold(
       appBar: AppBar(
@@ -43,10 +44,10 @@ class CategoryScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(category.products[index].name,
-                              style: TextStyle(fontSize: 16)),
-                          SizedBox(height: 5),
+                              style: const TextStyle(fontSize: 16)),
+                          const SizedBox(height: 5),
                           Text(category.products[index].description),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Text(category.products[index].tags.join(', ')),
                         ],
                       ),

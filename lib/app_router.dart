@@ -3,8 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:horeca_project/presentation/category_screen.dart';
 import 'package:horeca_project/presentation/home.dart';
 import 'package:horeca_project/scaffold_with_bottom_bar.dart';
-
-import 'main.dart';
+import 'model/category.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -17,7 +16,6 @@ class AppRouter {
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         pageBuilder: (context, state, child) {
-          print(state.location);
           return NoTransitionPage(
             child: ScaffoldWithNavBar(
               location: state.location,
@@ -30,29 +28,30 @@ class AppRouter {
             path: '/',
             parentNavigatorKey: _shellNavigatorKey,
             pageBuilder: (context, state) {
-              return const NoTransitionPage(
+              return NoTransitionPage(
                 child: Scaffold(
-                  body: Center(child: Text("Main")),
+                  appBar: AppBar(
+                    title: const Text('Главная'),
+                  ),
+                  body: const MainScreen(),
                 ),
               );
             },
             routes: [
               GoRoute(
-                path: '${CategoryScreen.routeName}',
+                path: 'category/:id',
+                name: 'category',
                 builder: (BuildContext context, GoRouterState state) {
-                  return CategoryScreen();
+                  Category category = state.extra as Category;
+                  return CategoryScreen(category: category);
                 }
               ),
             ],
           ),
-          // GoRoute(
-          //   path: '/',
-          //   builder: (BuildContext context, GoRouterState state) {
-          //     return const MainScreen();
-          //   }),
           GoRoute(
             parentNavigatorKey: _shellNavigatorKey,
             path: '/search',
+            name: 'search',
             pageBuilder: (context, state) {
               return const NoTransitionPage(
                 child: Scaffold(
@@ -63,6 +62,7 @@ class AppRouter {
           ),GoRoute(
             parentNavigatorKey: _shellNavigatorKey,
             path: '/cart',
+            name: 'cart',
             pageBuilder: (context, state) {
               return const NoTransitionPage(
                 child: Scaffold(
@@ -74,6 +74,7 @@ class AppRouter {
           GoRoute(
             parentNavigatorKey: _shellNavigatorKey,
             path: '/account',
+            name: 'account',
             pageBuilder: (context, state) {
               return const NoTransitionPage(
                 child: Scaffold(

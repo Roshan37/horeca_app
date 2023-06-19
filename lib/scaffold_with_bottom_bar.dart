@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:horeca_project/presentation/category_screen.dart';
 
 class ScaffoldWithNavBar extends StatefulWidget {
   String location;

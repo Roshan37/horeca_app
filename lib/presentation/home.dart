@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:horeca_project/presentation/category_screen.dart';
+import 'package:go_router/go_router.dart';
 import '../model/category.dart';
 import '../model/product.dart';
 
@@ -11,7 +11,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0;
 
   final List<Category> categories = [
     Category(name: 'Пекарни и кондитерские', image: 'https://fastly.picsum.photos/id/147/600/600.jpg?hmac=R0gsup77v6-N6zAFFlEbFM3SC-yYdz4Vq2fJ424XIzU', products: [
@@ -36,24 +35,15 @@ class _MainScreenState extends State<MainScreen> {
     ]),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Главная'),
-      ),
-      body: ListView.builder(
+    return ListView.builder(
         itemCount: categories.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
             onTap: () {
-              Navigator.pushNamed(context, CategoryScreen.routeName, arguments: categories[index]);
+              context.goNamed('category', pathParameters: {'id': index.toString()}, extra: categories[index]);
+              // Navigator.pushNamed(context, CategoryScreen.routeName, arguments: categories[index]);
             },
             child: Card(
               child: Container(
@@ -73,20 +63,6 @@ class _MainScreenState extends State<MainScreen> {
             ),
           );
         },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        showUnselectedLabels: true,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Главная'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Поиск'),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Корзина'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Аккаунт'),
-        ],
-      ),
-    );
+      );
   }
 }
