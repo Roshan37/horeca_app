@@ -41,6 +41,7 @@ class AppRouter {
               GoRoute(
                 path: 'category/:id',
                 name: 'category',
+                parentNavigatorKey: _shellNavigatorKey,
                 builder: (BuildContext context, GoRouterState state) {
                   Category category = state.extra as Category;
                   return CategoryScreen(category: category);
