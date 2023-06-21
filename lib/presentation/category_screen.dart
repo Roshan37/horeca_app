@@ -1,63 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:horeca_project/model/product.dart';
 import 'package:horeca_project/presentation/product_screen.dart';
 import '../model/category.dart';
 
 class CategoryScreen extends StatelessWidget {
-  late Category category;
+  late List<Product> productList;
+  late String? categoryName;
 
-  CategoryScreen({super.key, required this.category});
+  CategoryScreen({super.key, required this.productList, required this.categoryName});
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(category.name),
+        title: Text(categoryName!),
       ),
-      body: ListView.builder(
-        itemCount: category.products.length,
+      body: GridView.builder(
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.all(10.0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          mainAxisExtent: 210,
+          crossAxisCount: 3,
+          crossAxisSpacing: 10,
+        ),
+        itemCount: productList.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return ProductScreen(product: category.products[index]);
+                  return ProductScreen(product: productList[index]);
                 },
               );
-              // Navigator.pushNamed(context, ProductScreen.routeName,
-              //     arguments: category.products[index]);
             },
-            child: Card(
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: Image.network('https://fastly.picsum.photos/id/357/200/200.jpg?hmac=hHhE00vBpBPSjAiUhwzFKQi9PsCWu7sblLKC2rT6Fn8',
-                        fit: BoxFit.cover),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(5.0),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    color: Color(0xFFEEEEEE),
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(category.products[index].name,
-                              style: const TextStyle(fontSize: 16)),
-                          const SizedBox(height: 5),
-                          Text(category.products[index].description),
-                          const SizedBox(height: 5),
-                          Text(category.products[index].tags.join(', ')),
-                        ],
-                      ),
-                    ),
+                  child: Image.network(
+                    productList[index].image,
+                    fit: BoxFit.contain,
+                    height: 140,
+                    alignment: Alignment.center,
+                  ),
+                ),
+                Text(
+                  textAlign: TextAlign.start,
+                  productList[index].name,
+                  style: const TextStyle(
+                    fontSize: 16,
                   )
-                ],
-              ),
+                ),
+              ],
             ),
           );
-        },
+        }
       ),
     );
   }

@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:horeca_project/presentation/category_screen.dart';
 import 'package:horeca_project/presentation/home.dart';
 import 'package:horeca_project/scaffold_with_bottom_bar.dart';
-import 'model/category.dart';
+import 'model/product.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -43,8 +43,9 @@ class AppRouter {
                 name: 'category',
                 parentNavigatorKey: _shellNavigatorKey,
                 builder: (BuildContext context, GoRouterState state) {
-                  Category category = state.extra as Category;
-                  return CategoryScreen(category: category);
+                  List<Product> productList = state.extra as List<Product>;
+                  String? categoryName = state.queryParameters['categoryName'];
+                  return CategoryScreen(productList: productList, categoryName: categoryName,);
                 }
               ),
             ],

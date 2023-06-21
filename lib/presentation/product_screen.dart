@@ -12,24 +12,50 @@ class ProductScreen extends StatelessWidget {
     final Product product = this.product;
 
     return AlertDialog(
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15.0))),
       content: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.4,
-              width: double.infinity,
-              child: Image.network('https://fastly.picsum.photos/id/538/200/200.jpg?hmac=oJRLJPsN8ZdWjPpKGEU-oqAZMBKa4JsTnuUSqgRbyP4', fit: BoxFit.cover),
+            Container(
+              padding: const EdgeInsets.all(15.0),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                color: Color(0xFFEEEEEE),
+              ),
+              child: Image.network(
+                product.image,
+                fit: BoxFit.contain,
+                alignment: Alignment.center,
+              ),
             ),
             Container(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(product.name, style: TextStyle(fontSize: 22)),
-                  SizedBox(height: 10),
-                  Text(product.description, style: TextStyle(fontSize: 16)),
-                  SizedBox(height: 20),
-                  Text('Цена: ${product.price.toString()} руб.'),
+                  Text(
+                    product.name,
+                    style: const TextStyle(fontSize: 22)
+                  ),
+                  const SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Text(
+                          '${product.price.toString()} ₽ '
+                      ),
+                      const Text('• ', style: TextStyle(color: Color(0xFFBDBDBD)),),
+                      Text(
+                          '${product.weight.toString()}г',
+                          style: const TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    product.description,
+                    style: const TextStyle(fontSize: 16)
+                  ),
                 ],
               ),
             ),
