@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../model/product.dart';
 
 class ProductScreen extends StatelessWidget {
@@ -12,8 +13,10 @@ class ProductScreen extends StatelessWidget {
     final Product product = this.product;
 
     return AlertDialog(
+      insetPadding: const EdgeInsets.all(20.0),
+      contentPadding: const EdgeInsets.all(20.0),
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15.0))),
+        borderRadius: BorderRadius.all(Radius.circular(15.0))),
       content: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -23,14 +26,49 @@ class ProductScreen extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 color: Color(0xFFEEEEEE),
               ),
-              child: Image.network(
-                product.image,
-                fit: BoxFit.contain,
-                alignment: Alignment.center,
+              child: Stack(
+                children: [
+                  Image.network(
+                    product.image,
+                    fit: BoxFit.contain,
+                    alignment: Alignment.center,
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Row(
+                      children: [
+                        Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            color: Colors.white,
+                          ),
+                          child: IconButton(
+                            onPressed: () => {},
+                            icon: const Icon(Icons.favorite_border)
+                          )
+                        ),
+                        const SizedBox(width: 10.0),
+                        Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            color: Colors.white,
+                          ),
+                          child: IconButton(
+                            onPressed: () => {
+                              context.pop()
+                            },
+                            icon: const Icon(Icons.close)
+                          )
+                        ),
+                      ],
+                    )
+                  ),
+                ]
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.only(top: 10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -56,6 +94,21 @@ class ProductScreen extends StatelessWidget {
                     product.description,
                     style: const TextStyle(fontSize: 16)
                   ),
+                  const SizedBox(height: 15),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        )
+                      ),
+                      fixedSize: MaterialStateProperty.all(
+                        Size(MediaQuery.of(context).size.width, 50),
+                      ),
+                    ),
+                    onPressed: () => {},
+                    child: const Text('Добавить в корзину')
+                  )
                 ],
               ),
             ),

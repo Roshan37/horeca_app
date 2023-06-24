@@ -29,7 +29,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
       bottomNavigationBar: BottomNavigationBar(
         selectedLabelStyle: labelStyle,
         unselectedLabelStyle: labelStyle,
-        selectedItemColor: const Color(0xFF434343),
+        selectedItemColor: const Color(0xFF2196F3),
         selectedFontSize: 12,
         unselectedItemColor: const Color(0xFF838383),
         showUnselectedLabels: true,

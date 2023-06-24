@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:horeca_project/presentation/cart.dart';
 import 'package:horeca_project/presentation/category_screen.dart';
 import 'package:horeca_project/presentation/home.dart';
 import 'package:horeca_project/scaffold_with_bottom_bar.dart';
@@ -53,9 +54,12 @@ class AppRouter {
             path: '/search',
             name: 'search',
             pageBuilder: (context, state) {
-              return const NoTransitionPage(
+              return NoTransitionPage(
                 child: Scaffold(
-                  body: Center(child: Text("Поиск")),
+                  appBar: AppBar(
+                    title: const Text('Поиск'),
+                  ),
+                  body: const Center(child: Text("Поиск")),
                 ),
               );
             }
@@ -64,9 +68,12 @@ class AppRouter {
             path: '/cart',
             name: 'cart',
             pageBuilder: (context, state) {
-              return const NoTransitionPage(
+              return NoTransitionPage(
                 child: Scaffold(
-                  body: Center(child: Text("Корзина")),
+                  appBar: AppBar(
+                    title: const Text('Корзина'),
+                  ),
+                  body: const CartScreen(),
                 ),
               );
             }
