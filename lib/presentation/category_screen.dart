@@ -1,66 +1,102 @@
 import 'package:flutter/material.dart';
-import 'package:horeca_project/model/product.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:horeca_project/presentation/product_screen.dart';
-import '../model/category.dart';
+import '../bloc/products_bloc.dart';
 
 class CategoryScreen extends StatelessWidget {
-  late List<Product> productList;
-  late String? categoryName;
+  final String? categoryName;
+  const CategoryScreen({super.key, required this.categoryName});
 
-  CategoryScreen({super.key, required this.productList, required this.categoryName});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(categoryName!),
-      ),
-      body: GridView.builder(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.all(10.0),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          mainAxisExtent: 210,
-          crossAxisCount: 3,
-          crossAxisSpacing: 10,
-        ),
-        itemCount: productList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return ProductScreen(product: productList[index]);
-                },
-              );
+  Widget _buildListProducts() {
+    return BlocProvider<ProductsBloc>(
+      create: (context) => ProductsBloc()..add(GetProducts()),
+      child: BlocListener<ProductsBloc, ProductsState>(
+        listener: (context, state) {
+          if(state is ProductsError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message!),
+                )
+            );
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+          title: Text(categoryName!),
+          ),
+          body: (BlocBuilder<ProductsBloc, ProductsState>(
+            builder: (context, state){
+              if(state is ProductsInitial) {
+                return _buildLoading();
+              } else if(state is ProductsLoading) {
+                return _buildLoading();
+              } else if(state is ProductsLoaded) {
+                return _buildCard(context, state);
+              } else if(state is ProductsError) {
+                return Container();
+              } else {
+                return Container();
+              }
             },
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(5.0),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    color: Color(0xFFEEEEEE),
-                  ),
-                  child: Image.network(
-                    productList[index].image,
-                    fit: BoxFit.contain,
-                    height: 140,
-                    alignment: Alignment.center,
-                  ),
+          )),
+        )
+      ),
+    );
+  }
+
+  Widget _buildLoading() => const Center(child: CircularProgressIndicator());
+
+  Widget _buildCard(BuildContext context, model){
+    return GridView.builder(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.all(10.0),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        mainAxisExtent: 210,
+        crossAxisCount: 3,
+        crossAxisSpacing: 10,
+      ),
+      itemCount: model.productsList.length,
+      itemBuilder: (BuildContext context, int index) {
+        return GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return ProductScreen(product: model.productsList[index]);
+              },
+            );
+          },
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(5.0),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  color: Color(0xFFEEEEEE),
                 ),
-                Text(
-                  textAlign: TextAlign.start,
-                  productList[index].name,
+                child: Image.network(
+                  model.productsList[index].image,
+                  fit: BoxFit.contain,
+                  height: 140,
+                  alignment: Alignment.center,
+                ),
+              ),
+              Text(
+                  //textAlign: TextAlign.start,
+                  model.productsList[index].name,
                   style: const TextStyle(
                     fontSize: 16,
                   )
-                ),
-              ],
-            ),
-          );
-        }
-      ),
+              ),
+            ],
+          ),
+        );
+      }
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildListProducts();
   }
 }

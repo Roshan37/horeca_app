@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:horeca_project/bloc/catalog_bloc.dart';
+import 'package:horeca_project/bloc/categories_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainScreen extends StatefulWidget {
@@ -11,11 +11,11 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen> {
-  final CatalogBloc _catalogBloc = CatalogBloc();
+  final CategoriesBloc _categoriesBloc = CategoriesBloc();
 
   @override
   void initState(){
-    _catalogBloc.add(GetCatalog());
+    _categoriesBloc.add(GetCategories());
     super.initState();
   }
 
@@ -23,10 +23,10 @@ class MainScreenState extends State<MainScreen> {
     return Container(
       margin: const EdgeInsets.all(8.0),
       child: BlocProvider(
-        create: (context) => _catalogBloc,
-        child: BlocListener<CatalogBloc, CatalogState>(
+        create: (context) => _categoriesBloc,
+        child: BlocListener<CategoriesBloc, CategoriesState>(
           listener: (context, state) {
-            if(state is CatalogError) {
+            if(state is CategoriesError) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.message!),
@@ -34,15 +34,15 @@ class MainScreenState extends State<MainScreen> {
               );
             }
           },
-          child: BlocBuilder<CatalogBloc, CatalogState>(
+          child: BlocBuilder<CategoriesBloc, CategoriesState>(
             builder: (context, state){
-              if(state is CatalogInitial) {
+              if(state is CategoriesInitial) {
                 return _buildLoading();
-              } else if(state is CatalogLoading) {
+              } else if(state is CategoriesLoading) {
                 return _buildLoading();
-              } else if(state is CatalogLoaded) {
+              } else if(state is CategoriesLoaded) {
                 return _buildCard(context, state);
-              } else if(state is CatalogError) {
+              } else if(state is CategoriesError) {
                 return Container();
               } else {
                 return Container();
@@ -66,7 +66,6 @@ class MainScreenState extends State<MainScreen> {
               'category',
               pathParameters: {'id': model.categoriesList[index].id.toString()},
               queryParameters: {'categoryName': model.categoriesList[index].name},
-              extra: model.productsList
             );
           },
           child: Container(
