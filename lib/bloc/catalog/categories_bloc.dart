@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:horeca_project/resources/api-repository.dart';
-import '../model/category.dart';
+import '../../model/category.dart';
 part 'categories_event.dart';
 part 'categories_state.dart';
 

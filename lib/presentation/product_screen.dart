@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../bloc/cart/cart_bloc.dart';
 import '../model/product.dart';
 
 class ProductScreen extends StatelessWidget {
@@ -106,7 +108,9 @@ class ProductScreen extends StatelessWidget {
                         Size(MediaQuery.of(context).size.width, 50),
                       ),
                     ),
-                    onPressed: () => {},
+                    onPressed: () {
+                      BlocProvider.of<CartBloc>(context).add(AddToCart(product));
+                    },
                     child: const Text('Добавить в корзину')
                   )
                 ],

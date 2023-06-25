@@ -1,29 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:horeca_project/bloc/categories_bloc.dart';
+import 'package:horeca_project/bloc/catalog/categories_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
-
-  @override
-  MainScreenState createState() => MainScreenState();
-}
-
-class MainScreenState extends State<MainScreen> {
-  final CategoriesBloc _categoriesBloc = CategoriesBloc();
-
-  @override
-  void initState(){
-    _categoriesBloc.add(GetCategories());
-    super.initState();
-  }
 
   Widget _buildListCategories() {
     return Container(
       margin: const EdgeInsets.all(8.0),
       child: BlocProvider(
-        create: (context) => _categoriesBloc,
+        create: (context) => CategoriesBloc()..add(GetCategories()),
         child: BlocListener<CategoriesBloc, CategoriesState>(
           listener: (context, state) {
             if(state is CategoriesError) {

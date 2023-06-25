@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:horeca_project/presentation/product_screen.dart';
-import '../bloc/products_bloc.dart';
+import '../bloc/catalog/products_bloc.dart';
 
 class CategoryScreen extends StatelessWidget {
   final String? categoryName;
