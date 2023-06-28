@@ -8,12 +8,28 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc() : super(const CartState([])) {
 
     on<AddToCart> ((event, emit) async {
-      final currentCart = List<Product>.from(state.productsList)..add(event.product);
+      final currentCart = List<Product>.from(state.productsList);
+      if(currentCart.contains(event.product)) {
+        final index = currentCart.indexOf(event.product);
+        currentCart[index].quantity++;
+      } else {
+        currentCart.add(event.product);
+      }
       emit(CartState(currentCart));
     });
 
     on<RemoveFromCart> ((event, emit) async {
-      final currentCart = List<Product>.from(state.productsList)..remove(event.product);
+      final currentCart = List<Product>.from(state.productsList);
+      if(currentCart.contains(event.product)) {
+        final index = currentCart.indexOf(event.product);
+        if(currentCart[index].quantity == 1) {
+          currentCart.remove(event.product);
+        } else {
+          currentCart[index].quantity--;
+        }
+      } else {
+        currentCart.remove(event.product);
+      }
       emit(CartState(currentCart));
     });
   }

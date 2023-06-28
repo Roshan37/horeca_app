@@ -7,8 +7,9 @@ class Product {
   int weight;
   List<String> tags;
   static String? error;
+  int quantity;
 
-  Product({required this.id, required this.name, required this.description, required this.image, required this.price, required this.weight, required this.tags});
+  Product({required this.id, required this.name, required this.description, required this.image, required this.price, required this.weight, required this.tags, this.quantity = 1});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(

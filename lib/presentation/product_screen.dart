@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import '../bloc/cart/cart_bloc.dart';
 import '../model/product.dart';
 
@@ -13,6 +14,8 @@ class ProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // final Product product = ModalRoute.of(context)?.settings.arguments as Product;
     final Product product = this.product;
+    final currency = NumberFormat("#,##0", "ru_RU");
+    final pricePrint = currency.format(product.price);
 
     return AlertDialog(
       insetPadding: const EdgeInsets.all(20.0),
@@ -82,7 +85,7 @@ class ProductScreen extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                          '${product.price.toString()} ₽ '
+                          '$pricePrint ₽ '
                       ),
                       const Text('• ', style: TextStyle(color: Color(0xFFBDBDBD)),),
                       Text(

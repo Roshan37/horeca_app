@@ -6,5 +6,5 @@ class CartState extends Equatable {
   const CartState(this.productsList);
 
   @override
-  List<Object?> get props => [productsList];
+  List<Object?> get props => [productsList, identityHashCode(this)];
 }

@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/cart/cart_bloc.dart';
+import 'package:intl/intl.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CartBloc, CartState>(
+    return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
         if (state.productsList.isEmpty) {
           return const Center(child: Text('Корзина пуста'));
         } else {
+          late int sum = 0;
+          for (var product in state.productsList) {
+            sum += product.price * product.quantity;
+          }
+          final currency = NumberFormat("#,##0", "ru_RU");
+          final sumPrint = currency.format(sum);
           return Column(
             children: [
               Expanded(
@@ -82,20 +89,18 @@ class CartScreen extends StatelessWidget {
                                   splashColor: Colors.transparent,
                                   padding: const EdgeInsets.all(0.0),
                                   onPressed: () {
-                                    print('remove');
-                                    // BlocProvider.of<CartBloc>(context)
-                                    //     .add(RemoveFromCart(product));
+                                    BlocProvider.of<CartBloc>(context)
+                                        .add(RemoveFromCart(product));
                                   },
                                   icon: const Icon(Icons.remove, size: 20,),
                                 ),
-                                Text('1',),
+                                Text(product.quantity.toString()),
                                 IconButton(
                                   splashColor: Colors.transparent,
                                   padding: const EdgeInsets.all(0.0),
                                   onPressed: () {
-                                    print('add');
-                                    // BlocProvider.of<CartBloc>(context)
-                                    //     .add(AddToCart(product));
+                                    BlocProvider.of<CartBloc>(context)
+                                        .add(AddToCart(product));
                                   },
                                   icon: const Icon(Icons.add, size: 20,),
                                 ),
@@ -122,14 +127,13 @@ class CartScreen extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {},
-                  child: Text('Оплатить 2 004 ₽')
+                  child: Text('Оплатить $sumPrint ₽')
                 ),
               )
             ],
           );
         }
       },
-        listener: (context, state){}
     );
   }
 }
