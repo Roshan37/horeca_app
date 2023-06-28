@@ -22,7 +22,7 @@ class CategoryScreen extends StatelessWidget {
         },
         child: Scaffold(
           appBar: AppBar(
-          title: Text(categoryName!),
+            title: Text(categoryName!),
           ),
           body: (BlocBuilder<ProductsBloc, ProductsState>(
             builder: (context, state){
@@ -47,65 +47,111 @@ class CategoryScreen extends StatelessWidget {
   Widget _buildLoading() => const Center(child: CircularProgressIndicator());
 
   Widget _buildCard(BuildContext context, model){
-    return GridView.builder(
+    final Set<String> tags = model.tags;
+    final productsList = model.productsList;
+    final int selectedTagIndex = model.selectedTagIndex;
+    return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.all(10.0),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        mainAxisExtent: 210,
-        crossAxisCount: 3,
-        crossAxisSpacing: 10,
-      ),
-      itemCount: model.productsList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return GestureDetector(
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return ProductScreen(product: model.productsList[index]);
-              },
-            );
-          },
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(5.0),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  color: Color(0xFFEEEEEE),
-                ),
-                child: Image.network(
-                  model.productsList[index].image,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return SizedBox(
-                      height: 100,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                              : null,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height*1.05,
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.fromLTRB(10.0, 15.0, 0.0, 10.0),
+              height: 37,
+              width: MediaQuery.of(context).size.width,
+              child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                clipBehavior: Clip.none,
+                scrollDirection: Axis.horizontal,
+                itemCount: tags.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    margin: const EdgeInsets.only(right: 10.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0.5,
+                        backgroundColor: index == selectedTagIndex ? Colors.blue : const Color(0xFFEEEEEE),
+                        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
-                    );
-                  },
-                  fit: BoxFit.contain,
-                  height: 140,
-                  alignment: Alignment.center,
+                      onPressed: (){},
+                      child: Text(
+                        tags.elementAt(index),
+                        style: TextStyle(color: index == selectedTagIndex ? Colors.white : Colors.black54),
+                      )
+                    ),
+                  );
+                }
+              ),
+            ),
+            Expanded(
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(10.0),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisExtent: 210,
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10,
                 ),
+                itemCount:  productsList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ProductScreen(product: productsList[index]);
+                        },
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5.0),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            color: Color(0xFFEEEEEE),
+                          ),
+                          child: Image.network(
+                            productsList[index].image,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return SizedBox(
+                                height: 100,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                ),
+                              );
+                            },
+                            fit: BoxFit.contain,
+                            height: 140,
+                            alignment: Alignment.center,
+                          ),
+                        ),
+                        Text(
+                            //textAlign: TextAlign.start,
+                            productsList[index].name,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            )
+                        ),
+                      ],
+                    ),
+                  );
+                }
               ),
-              Text(
-                  //textAlign: TextAlign.start,
-                  model.productsList[index].name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  )
-              ),
-            ],
-          ),
-        );
-      }
+            ),
+          ],
+        ),
+      ),
     );
   }
 

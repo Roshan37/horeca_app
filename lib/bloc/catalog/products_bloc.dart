@@ -9,12 +9,16 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
 
   ProductsBloc() : super(ProductsInitial()) {
     final ApiRepository apiRepository = ApiRepository();
-
+    int selectedTagIndex = 0;
     on<GetProducts> ((event, emit) async {
       try{
         emit(ProductsLoading());
         final productsList = await apiRepository.fetchProductsList();
-        emit(ProductsLoaded(productsList));
+        Set<String> tags = {};
+        for (var product in productsList) {
+          tags.addAll(product.tags);
+        }
+        emit(ProductsLoaded(productsList, tags, selectedTagIndex));
       } on NetworkError {
         emit(const ProductsError("Failed to fetch data"));
       }
