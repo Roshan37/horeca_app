@@ -113,6 +113,13 @@ class ProductScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       BlocProvider.of<CartBloc>(context).add(AddToCart(product));
+                      context.pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          duration: Duration(seconds: 2),
+                          content: Text('Блюдо добавлено в корзину'),
+                        )
+                      );
                     },
                     child: const Text('Добавить в корзину')
                   )

@@ -115,7 +115,7 @@ class CategoryScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(5.0),
+                          padding: const EdgeInsets.fromLTRB(8.0, 10.0, 2.0, 0.0),
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                             color: Color(0xFFEEEEEE),

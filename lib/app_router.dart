@@ -83,9 +83,12 @@ class AppRouter {
             path: '/account',
             name: 'account',
             pageBuilder: (context, state) {
-              return const NoTransitionPage(
+              return NoTransitionPage(
                 child: Scaffold(
-                  body: Center(child: Text("Аккаунт")),
+                  appBar: AppBar(
+                    title: const Text('Аккаунт'),
+                  ),
+                  body: const Center(child: Text("Аккаунт")),
                 ),
               );
             }
