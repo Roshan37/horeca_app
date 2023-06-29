@@ -18,7 +18,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
     MyCustomBottomNavBarItem(icon: Icon(Icons.home), label: 'Главная', initialLocation: '/'),
     MyCustomBottomNavBarItem(icon: Icon(Icons.search), label: 'Поиск', initialLocation: '/search'),
     MyCustomBottomNavBarItem(icon: Icon(Icons.shopping_cart), label: 'Корзина', initialLocation: '/cart'),
-    MyCustomBottomNavBarItem(icon: Icon(Icons.account_circle), label: 'Аккаунт', initialLocation: '/account'),
+    MyCustomBottomNavBarItem(icon: Icon(Icons.account_circle_outlined), label: 'Аккаунт', initialLocation: '/account'),
   ];
 
   @override

@@ -22,7 +22,23 @@ class CategoryScreen extends StatelessWidget {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: Text(categoryName!),
+            foregroundColor: Colors.black,
+            shadowColor: Colors.transparent,
+            backgroundColor: Colors.white,
+            title: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    overflow: TextOverflow.ellipsis,
+                    categoryName!,
+                    style: const TextStyle(color: Colors.black),
+                  ),
+                ),
+                Image.asset('assets/user_pic.png', filterQuality: FilterQuality.high,)
+              ],
+            ),
           ),
           body: (BlocBuilder<ProductsBloc, ProductsState>(
             builder: (context, state){
