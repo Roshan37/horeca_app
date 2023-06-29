@@ -32,6 +32,8 @@ class CategoryScreen extends StatelessWidget {
                 return _buildLoading();
               } else if(state is ProductsLoaded) {
                 return _buildCard(context, state);
+              } else if(state is ProductsFiltered) {
+                return _buildCard(context, state);
               } else if(state is ProductsError) {
                 return Container();
               } else {
@@ -48,7 +50,8 @@ class CategoryScreen extends StatelessWidget {
 
   Widget _buildCard(BuildContext context, model){
     final Set<String> tags = model.tags;
-    final productsList = model.productsList;
+    final unfilteredList = model.productsList;
+    final productsList = model is ProductsFiltered ? model.filteredList : model.productsList;
     final int selectedTagIndex = model.selectedTagIndex;
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
@@ -77,7 +80,9 @@ class CategoryScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
-                      onPressed: (){},
+                      onPressed: (){
+                        BlocProvider.of<ProductsBloc>(context).add(FilterProducts(unfilteredList, tags.elementAt(index), tags));
+                      },
                       child: Text(
                         tags.elementAt(index),
                         style: TextStyle(color: index == selectedTagIndex ? Colors.white : Colors.black54),

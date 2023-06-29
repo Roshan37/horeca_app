@@ -15,7 +15,14 @@ class ProductsLoaded extends ProductsState {
   final List<Product> productsList;
   final Set<String> tags;
   final int selectedTagIndex;
+
   const ProductsLoaded(this.productsList, this.tags, this.selectedTagIndex);
+}
+
+class ProductsFiltered extends ProductsLoaded {
+  final List<Product> filteredList;
+
+  const ProductsFiltered(super.productsList, super.tags, super.selectedTagIndex, this.filteredList);
 }
 
 class ProductsError extends ProductsState{
