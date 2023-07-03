@@ -45,7 +45,7 @@ class MainScreen extends StatelessWidget {
 
   Widget _buildCard(BuildContext context, model){
     return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       itemCount: model.categoriesList.length,
       itemBuilder: (BuildContext context, int index) {
         return InkWell(
@@ -58,7 +58,7 @@ class MainScreen extends StatelessWidget {
           },
           child: Container(
             margin: const EdgeInsets.only(bottom: 8.0),
-            height: MediaQuery.of(context).size.height/4-47,
+            height: 160,
             decoration: BoxDecoration(
               color: Colors.transparent,
               image: DecorationImage(
